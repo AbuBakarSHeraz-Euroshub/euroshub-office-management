@@ -4,7 +4,8 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 dotenv.config();
-const authRoutes = require('./routes/auth');
+const authRoutes = require('./routes/auth/auth');
+const boardRoutes = require('./routes/baord/board');
 
 
 const app = express();
@@ -23,6 +24,8 @@ app.listen(process.env.PORT,()=>{
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/api/board' , boardRoutes);
+
 
 
 

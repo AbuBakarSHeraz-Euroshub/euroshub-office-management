@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
-const User = require('../models/User');
-const {genToken} = require('../config/jwt');
+const User = require('../../models/User');
+const {genToken} = require('../../config/jwt');
 exports.register = async(req, res) =>{
     try{
         const {employee_id, name, email, password, gender, role, contact, dapartment, position, joining_date,leave_balance} = req.body;
@@ -61,4 +61,19 @@ exports.login = async(req, res) => {
         console.error('Error in User Login:', error);
     }
 
+};
+
+exports.getProfile = async(req, res) => {
+    try{
+        const userId = req.user.id;
+        const user = await User.findById(userId);
+        if(!user){
+            res.status(404).json({message: 'User not Found'});
+        }
+        const {password, ...userWithoutPassword} = user.toObject();
+        res.status(200).json({user: userWithoutPassword});
+    }catch(error){
+        res.status(500).json({message: 'It is not you is is US', error: error.message});
+        console.error('Error in Fetching user Profile: ' , error);
+    }
 };
